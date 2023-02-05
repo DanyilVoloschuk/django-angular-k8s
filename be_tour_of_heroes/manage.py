@@ -6,6 +6,7 @@ import dotenv
 
 
 def main():
+    print("hello")
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'be_tour_of_heroes.settings')
     try:
