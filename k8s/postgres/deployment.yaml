@@ -16,22 +16,9 @@ spec:
       containers:
         - name: postgres-container
           image: postgres:15.1
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-credentials
-                  key: user
-
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-credentials
-                  key: password
-
-            - name: POSTGRES_DB
-              value: kubernetes_django
-
+          envFrom:
+            - configMapRef:
+                name: postgres-credentials
           ports:
             - containerPort: 5432
           volumeMounts:
@@ -42,15 +29,26 @@ spec:
         - name: postgres-volume-mount
           persistentVolumeClaim:
             claimName: postgres-pvc
+#---
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  name: postgres-credentials
+#data:
+#  user: ZGphbmdv
+#  db: a3ViZXJuZXRlc19kamFuZ28=
+#  password: MWEyNmQxZzI2ZDFnZXNiP2U3ZGVzYj9lN2Q=
 ---
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: postgres-credentials
-type: Opaque
+  labels:
+    app: postgres
 data:
-  user: ZGphbmdv
-  password: MWEyNmQxZzI2ZDFnZXNiP2U3ZGVzYj9lN2Q=
+  POSTGRES_DB: postgresdb
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: test123
 ---
 kind: Service
 apiVersion: v1

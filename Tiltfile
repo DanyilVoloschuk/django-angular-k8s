@@ -1,7 +1,7 @@
 k8s_yaml('./k8s/postgres/deployment.yaml')
 
 k8s_resource(
-    'django',
+    'postgres',
     port_forwards='5432:5432',
     labels=['backend']
 )

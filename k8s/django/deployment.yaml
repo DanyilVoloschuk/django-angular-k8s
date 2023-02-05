@@ -20,18 +20,21 @@ spec:
           ports:
             - containerPort: 8000
           env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
             - name: POSTGRES_USER
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: postgres-credentials
-                  key: user
-
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: postgres-credentials
-                  key: password
-
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_HOST
               value: postgres-service
 ---
@@ -60,18 +63,21 @@ spec:
           image: django-k8s-test-project
           command: ['./migrate.sh']
           env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
             - name: POSTGRES_USER
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: postgres-credentials
-                  key: user
-
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: postgres-credentials
-                  key: password
-
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_HOST
               value: postgres-service
       restartPolicy: Never

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from pprint import pprint
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -90,16 +91,32 @@ DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 DB_DATABASE = os.environ.get("POSTGRES_DB")
 DB_HOST = os.environ.get("POSTGRES_HOST")
 DB_PORT = os.environ.get("POSTGRES_PORT")
+print({
+    "DB_USERNAME": DB_USERNAME,
+    "DB_PASSWORD": DB_PASSWORD,
+    "DB_DATABASE": DB_DATABASE,
+    "DB_HOST": DB_HOST,
+    "DB_PORT": DB_PORT,
+})
 DB_IS_AVAILABLE = all([
     DB_USERNAME,
     DB_PASSWORD,
-    DB_DATABASE,
+    # DB_DATABASE,
     DB_HOST,
-    DB_PORT,
+    # DB_PORT,
 ])
 DB_IGNORE_SSL = os.environ.get("DB_IGNORE_SSL") == "true"
-
-if DB_IS_AVAILABLE:
+print(f"""
+{'******'*10}
+{'******'*10}
+{'******'*10}
+HELLO MOTHERFUCKER
+{'******'*10}
+{'******'*10}
+{'******'*10}
+""")
+print(DB_IS_AVAILABLE)
+if DB_IS_AVAILABLE or True:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -107,14 +124,15 @@ if DB_IS_AVAILABLE:
             'USER': DB_USERNAME,
             'PASSWORD': DB_PASSWORD,
             'HOST': DB_HOST,
-            'PORT': DB_PORT,
+            'PORT': 5432,
         }
     }
+    pprint(DATABASES)
 
-    if not DB_IGNORE_SSL:
-        DATABASES["default"]["OPTIONS"] = {
-            "sslmode": "required"
-        }
+    # if not DB_IGNORE_SSL:
+    #     DATABASES["default"]["OPTIONS"] = {
+    #         "sslmode": "required"
+    #     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
